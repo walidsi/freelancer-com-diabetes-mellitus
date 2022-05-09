@@ -10,7 +10,12 @@ import numpy as np
 # Import supplementary visualization code visuals.py
 import visuals as vs
 
+_g_beta = 1
 
+def set_beta_f_score(beta: float):
+    _g_beta = beta
+    
+    
 def calculate_naive_evaluation_mertics(target: pd.Series):
     """TP = np.sum(target) # Counting the ones as this is the naive case.
     FP = target.count() - TP # Specific to the naive case
@@ -80,10 +85,10 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
 
     # TODO: Compute F-score on the the first 300 training samples using fbeta_score()
     results['f_train'] = fbeta_score(
-        y_train[:300], predictions_train, beta=1)
+        y_train[:300], predictions_train, beta=_g_beta)
 
     # TODO: Compute F-score on the test set which is y_test
-    results['f_test'] = fbeta_score(y_test, predictions_test, beta=1)
+    results['f_test'] = fbeta_score(y_test, predictions_test, beta=_g_beta)
 
     # Success
     print("{} trained on {} samples.".format(
@@ -123,7 +128,7 @@ def optimize_model(model, parameters, X_train, y_train, X_test, y_test) -> GridS
     from sklearn.metrics import make_scorer
 
     # TODO: Make an fbeta_score scoring object using make_scorer()
-    scorer = make_scorer(fbeta_score, beta=0.5)
+    scorer = make_scorer(fbeta_score, beta=_g_beta)
 
     # TODO: Perform grid search on the classifier using 'scorer' as the scoring method using GridSearchCV()
     grid_obj = GridSearchCV(model, param_grid=parameters, scoring=scorer)
@@ -149,6 +154,6 @@ def optimize_model(model, parameters, X_train, y_train, X_test, y_test) -> GridS
     print("Final accuracy score on the testing data: {:.4f}".format(
         accuracy_score(y_test, best_predictions)))
     print("Final F-score on the testing data: {:.4f}".format(
-        fbeta_score(y_test, best_predictions, beta=0.5)))
+        fbeta_score(y_test, best_predictions, beta=_g_beta)))
 
     return grid_fit
