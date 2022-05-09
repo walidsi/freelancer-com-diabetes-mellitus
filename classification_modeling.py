@@ -1,5 +1,6 @@
 # TODO: Import two metrics from sklearn - fbeta_score and accuracy_score
 from sklearn.metrics import accuracy_score, fbeta_score
+from sklearn.base import BaseEstimator
 from time import time
 from IPython.display import display
 # Allows the use of display() for DataFrames
@@ -98,7 +99,20 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
     return results
 
 
-def train_and_compare_models(models, X_train, y_train, X_test, y_test, naive_accuracy, naive_fscore):
+def train_and_compare_models(models: list, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series,
+                             naive_accuracy: float, naive_fscore: float):
+    """train, evaluate and compare models
+
+    Args:
+        models (list): list of models to train
+        X_train (pd.DataFrame): training features
+        y_train (pd.Series): training labels
+        X_test (pd.DataFrame): testing features
+        y_test (pd.Series): testing labels
+        naive_accuracy (float): naive accuracy score
+        naive_fscore (float): naive fscore score
+    """
+
     # TODO: Calculate the number of samples for 1%, 10%, and 100% of the training data
     # HINT: samples_100 is the entire training set i.e. len(y_train)
     # HINT: samples_10 is 10% of samples_100 (ensure to set the count of the values to be `int` and not `float`)
@@ -120,7 +134,21 @@ def train_and_compare_models(models, X_train, y_train, X_test, y_test, naive_acc
     vs.evaluate(results, naive_accuracy, naive_fscore)
 
 
-def optimize_model(model, parameters, X_train, y_train, X_test, y_test) -> GridSearchCV:
+def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series) -> GridSearchCV:
+    """Optimize the model using GridSearchCV
+
+    Args:
+        model (sklearn.base.BaseEstimator): model to optimize
+        parameters (_type_): _description_
+        X_train (pd.DataFrame): training features
+        y_train (pd.Series): training labels
+        X_test (pd.DataFrame): testing features
+        y_test (pd.Series): testing labels
+
+    Returns:
+        GridSearchCV: Grid search object with all scores, parameters, and best parameters and best estimator
+    """
+
     from sklearn.metrics import accuracy_score, fbeta_score
 
     # TODO: Import 'GridSearchCV', 'make_scorer', and any other necessary libraries
