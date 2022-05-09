@@ -5,8 +5,40 @@ from IPython.display import display
 # Allows the use of display() for DataFrames
 from sklearn.model_selection import GridSearchCV
 
+import pandas as pd
+import numpy as np
 # Import supplementary visualization code visuals.py
 import visuals as vs
+
+
+def calculate_naive_evaluation_mertics(target: pd.Series):
+    """TP = np.sum(target) # Counting the ones as this is the naive case.
+    FP = target.count() - TP # Specific to the naive case
+
+    TN = 0 # No predicted negatives in the naive case
+    FN = 0 # No predicted negatives in the naive case
+
+    Args:
+        target (pd.Series): target column
+
+    Returns:
+        naive_accuracy, naive_precision, naive_recall, naive_fscore
+    """
+
+    # TODO: Calculate accuracy, precision and recall
+    naive_accuracy = (np.sum(target) + 0) / target.count()
+    naive_recall = np.sum(target) / np.sum(target)
+    naive_precision = np.sum(target) / target.count()
+
+    # TODO: Calculate F-score using the formula above for beta = 0.5 and correct values for precision and recall.
+    naive_fscore = ((1.0 + 0.5*0.5) * naive_precision * naive_recall) / \
+        (((0.5*0.5) * naive_precision) + naive_recall)
+
+    # Print the results
+    print("Naive Predictor: [Accuracy score: {:.4f}, F-score: {:.4f}]".format(
+        naive_accuracy, naive_fscore))
+
+    return naive_accuracy, naive_precision, naive_recall, naive_fscore
 
 
 def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
