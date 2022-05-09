@@ -4,7 +4,9 @@ from sklearn.base import BaseEstimator
 from time import time
 from IPython.display import display
 # Allows the use of display() for DataFrames
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
+from sklearn.model_selection._search import BaseSearchCV
+
 
 import pandas as pd
 import numpy as np
@@ -137,7 +139,8 @@ def train_and_compare_models(models: list, X_train: pd.DataFrame, y_train: pd.Se
     vs.evaluate(results, naive_accuracy, naive_fscore)
 
 
-def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series) -> GridSearchCV:
+def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_train: pd.Series,
+                   X_test: pd.DataFrame, y_test: pd.Series, randomized: bool = False) -> BaseSearchCV:
     """Optimize the model using GridSearchCV
 
     Args:
@@ -155,14 +158,17 @@ def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_tr
     from sklearn.metrics import accuracy_score, fbeta_score
 
     # TODO: Import 'GridSearchCV', 'make_scorer', and any other necessary libraries
-    from sklearn.model_selection import GridSearchCV
     from sklearn.metrics import make_scorer
 
     # TODO: Make an fbeta_score scoring object using make_scorer()
     scorer = make_scorer(fbeta_score, beta=_g_beta)
 
     # TODO: Perform grid search on the classifier using 'scorer' as the scoring method using GridSearchCV()
-    grid_obj = GridSearchCV(model, param_grid=parameters, scoring=scorer)
+    if randomized:
+        grid_obj = RandomizedSearchCV(
+            model, param_distributions=parameters, scoring=scorer, cv=StratifiedKFold(), random_state=0, n_jobs=-1)
+    else:
+        grid_obj = GridSearchCV(model, param_grid=parameters, scoring=scorer, cv=StratifiedKFold(), n_jobs=-1)
 
     # TODO: Fit the grid search object to the training data and find the optimal parameters using fit()
     grid_fit = grid_obj.fit(X_train, y_train)
