@@ -48,10 +48,10 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
 
     # TODO: Compute F-score on the the first 300 training samples using fbeta_score()
     results['f_train'] = fbeta_score(
-        y_train[:300], predictions_train, beta=0.5)
+        y_train[:300], predictions_train, beta=1)
 
     # TODO: Compute F-score on the test set which is y_test
-    results['f_test'] = fbeta_score(y_test, predictions_test, beta=0.5)
+    results['f_test'] = fbeta_score(y_test, predictions_test, beta=1)
 
     # Success
     print("{} trained on {} samples.".format(
