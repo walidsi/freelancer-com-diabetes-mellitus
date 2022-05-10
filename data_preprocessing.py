@@ -66,3 +66,45 @@ def remove_highly_correlated_features(features_df: pd.DataFrame, threshold: floa
     features_pure_df = features_df[corr_matrix.columns]
 
     return features_pure_df
+
+
+def numpy_arr_to_dataframe(nparray: np.ndarray, features: list) -> pd.DataFrame:
+    """Convert numpy array to dataframe
+
+    Args:
+        nparray (np.ndarray): input array
+        features: list of features names
+
+    Returns:
+        pd.DataFrame: dataframe
+    """
+    # Create list of column names with the format "colN" (from 1 to N)
+    col_names = features
+    # Declare pandas.DataFrame object
+    df = pd.DataFrame(data=nparray, columns=col_names)
+    return df
+
+
+def discretize_continuous_features(df: pd.DataFrame, continuous_features: list) -> pd.DataFrame:
+    """Discretize continuous features
+    
+    Args: 
+        df (pd.DataFrame): input dataframe
+        continuous_features (list): list of continuous features
+        
+    Returns:
+        pd.DataFrame: dataframe with continuous features replaced with discretized features
+    """
+    from sklearn.preprocessing import KBinsDiscretizer
+
+    discretizer = KBinsDiscretizer(encode='ordinal', strategy='uniform')
+    discretizer.fit(df[continuous_features])
+
+    arr = discretizer.transform(df[continuous_features])
+    arr_df = numpy_arr_to_dataframe(arr)
+    arr_df.reset_index(inplace=True, drop=True)
+    df.drop(continuous_features, axis=1, inplace=True)
+    df.reset_index(inplace=True, drop=True)
+    df = pd.concat([df, arr_df], axis=1)
+
+    return df
