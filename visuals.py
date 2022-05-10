@@ -172,18 +172,27 @@ def visualize_crosstabs(df: pd.DataFrame, categorical_features: list, target: st
     plot_rows = math.ceil(len(categorical_features) / columns_per_row)
 
     fig, axes = plt.subplots(plot_rows, columns_per_row, figsize=(15, plot_rows * 4), constrained_layout=True)
-    # Create crosstabs to show distribution the values of each categorical against income
+    # Create crosstabs to show distribution the values of each categorical against target variable
     i = j = 0
     for feat in categorical_features:
         table = pd.crosstab(df[feat], df[target])
-        table.div(table.sum(1).astype(float), axis=0).plot(kind='bar', ax=axes[i, j], stacked=True)
+
+        if plot_rows == 1:
+            table.div(table.sum(1).astype(float), axis=0).plot(kind='bar', ax=axes[j], stacked=True)
+        else:
+            table.div(table.sum(1).astype(float), axis=0).plot(kind='bar', ax=axes[i, j], stacked=True)
+
         j += 1
         if j == columns_per_row:
             j = 0
             i += 1
 
-    for j in range(j, columns_per_row):
-        axes[i, j].set_visible(False)
+    if j != 0:
+        for j in range(j, columns_per_row):
+            if plot_rows == 1:
+                axes[j].set_visible(False)
+            else:
+                axes[i, j].set_visible(False)
 
 
 def visualize_numerical_features(df: pd.DataFrame, numerical_features: list, target: str = None, kind: str = 'hist'):
