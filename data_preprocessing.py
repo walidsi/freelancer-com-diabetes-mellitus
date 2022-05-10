@@ -108,3 +108,28 @@ def discretize_continuous_features(df: pd.DataFrame, continuous_features: list) 
     df = pd.concat([df, arr_df], axis=1)
 
     return df
+
+
+def fill_empty_with_average(df: pd.DataFrame, column: str, criteria_column: str) -> pd.DataFrame:
+    """Fill empty cells in a column with the average value of the column in the same group
+
+        Args:
+            df (pd.DataFrame): input dataframe
+            column (str): column to fill
+            criteria_column (str): column to group by
+
+        Returns:
+            pd.DataFrame: updated dataframe
+        """
+    # Group by criteria_column and get the mean of column
+    if df[column].isnull().sum() == 0:
+        return df
+
+    values = df[criteria_column].unique()
+    for v in values:
+        mask = (df[criteria_column] == v)
+        mean = df[mask][column].mean()
+        print(f"Mean {v} {column} is {mean}")
+        df.loc[mask & (df[column].isnull()), column] = mean
+
+    return df
