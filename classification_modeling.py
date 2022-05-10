@@ -17,8 +17,8 @@ _g_beta = 1
 
 def set_beta_f_score(beta: float):
     _g_beta = beta
-    
-    
+
+
 def calculate_naive_evaluation_mertics(target: pd.Series):
     """TP = np.sum(target) # Counting the ones as this is the naive case.
     FP = target.count() - TP # Specific to the naive case
@@ -165,8 +165,12 @@ def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_tr
 
     # TODO: Perform grid search on the classifier using 'scorer' as the scoring method using GridSearchCV()
     if randomized:
-        grid_obj = RandomizedSearchCV(
-            model, param_distributions=parameters, scoring=scorer, cv=StratifiedKFold(), random_state=0, n_jobs=-1)
+        grid_obj = RandomizedSearchCV(model,
+                                      param_distributions=parameters,
+                                      scoring=scorer,
+                                      cv=StratifiedKFold(),
+                                      random_state=0,
+                                      n_jobs=-1)
     else:
         grid_obj = GridSearchCV(model, param_grid=parameters, scoring=scorer, cv=StratifiedKFold(), n_jobs=-1)
 
@@ -183,14 +187,10 @@ def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_tr
 
     # Report the before-and-afterscores
     print("Unoptimized model\n------")
-    print("Accuracy score on testing data: {:.4f}".format(
-        accuracy_score(y_test, predictions)))
-    print(
-        "F-score on testing data: {:.4f}".format(fbeta_score(y_test, predictions, beta=_g_beta)))
+    print("Accuracy score on testing data: {:.4f}".format(accuracy_score(y_test, predictions)))
+    print("F-score on testing data: {:.4f}".format(fbeta_score(y_test, predictions, beta=_g_beta)))
     print("\nOptimized Model\n------")
-    print("Final accuracy score on the testing data: {:.4f}".format(
-        accuracy_score(y_test, best_predictions)))
-    print("Final F-score on the testing data: {:.4f}".format(
-        fbeta_score(y_test, best_predictions, beta=_g_beta)))
+    print("Final accuracy score on the testing data: {:.4f}".format(accuracy_score(y_test, best_predictions)))
+    print("Final F-score on the testing data: {:.4f}".format(fbeta_score(y_test, best_predictions, beta=_g_beta)))
 
     return grid_fit
