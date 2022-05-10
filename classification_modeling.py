@@ -7,13 +7,13 @@ from IPython.display import display
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedKFold
 from sklearn.model_selection._search import BaseSearchCV
 
-
 import pandas as pd
 import numpy as np
 # Import supplementary visualization code visuals.py
 import visuals as vs
 
 _g_beta = 1
+
 
 def set_beta_f_score(beta: float):
     _g_beta = beta
@@ -43,8 +43,7 @@ def calculate_naive_evaluation_mertics(target: pd.Series):
         (((0.5*0.5) * naive_precision) + naive_recall)
 
     # Print the results
-    print("Naive Predictor: [Accuracy score: {:.4f}, F-score: {:.4f}]".format(
-        naive_accuracy, naive_fscore))
+    print("Naive Predictor: [Accuracy score: {:.4f}, F-score: {:.4f}]".format(naive_accuracy, naive_fscore))
 
     return naive_accuracy, naive_precision, naive_recall, naive_fscore
 
@@ -83,29 +82,26 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
     results['pred_time'] = end - start
 
     # TODO: Compute accuracy on the first 300 training samples which is y_train[:300]
-    results['acc_train'] = accuracy_score(
-        y_train[:training_set_size_to_predict], predictions_train)
+    results['acc_train'] = accuracy_score(y_train[:training_set_size_to_predict], predictions_train)
 
     # TODO: Compute accuracy on test set using accuracy_score()
     results['acc_test'] = accuracy_score(y_test, predictions_test)
 
     # TODO: Compute F-score on the the first 300 training samples using fbeta_score()
-    results['f_train'] = fbeta_score(
-        y_train[:training_set_size_to_predict], predictions_train, beta=_g_beta)
+    results['f_train'] = fbeta_score(y_train[:training_set_size_to_predict], predictions_train, beta=_g_beta)
 
     # TODO: Compute F-score on the test set which is y_test
     results['f_test'] = fbeta_score(y_test, predictions_test, beta=_g_beta)
 
     # Success
-    print("{} trained on {} samples.".format(
-        learner.__class__.__name__, sample_size))
+    print("{} trained on {} samples.".format(learner.__class__.__name__, sample_size))
 
     # Return the results
     return results
 
 
-def train_and_compare_models(models: list, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame, y_test: pd.Series,
-                             naive_accuracy: float, naive_fscore: float):
+def train_and_compare_models(models: list, X_train: pd.DataFrame, y_train: pd.Series, X_test: pd.DataFrame,
+                             y_test: pd.Series, naive_accuracy: float, naive_fscore: float):
     """train, evaluate and compare models
 
     Args:
@@ -132,16 +128,21 @@ def train_and_compare_models(models: list, X_train: pd.DataFrame, y_train: pd.Se
         clf_name = clf.__class__.__name__
         results[clf_name] = {}
         for i, samples in enumerate([samples_1, samples_10, samples_100]):
-            results[clf_name][i] = train_predict(
-                clf, samples, X_train, y_train, X_test, y_test)
+            results[clf_name][i] = train_predict(clf, samples, X_train, y_train, X_test, y_test)
 
     # Run metrics visualization for the three supervised learning models chosen
     vs.evaluate(results, naive_accuracy, naive_fscore)
 
 
-def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_train: pd.Series,
-                   X_test: pd.DataFrame, y_test: pd.Series, randomized: bool = False) -> BaseSearchCV:
-    """Optimize the model using GridSearchCV
+def optimize_model(model: BaseEstimator,
+                   parameters: dict,
+                   X_train: pd.DataFrame,
+                   y_train: pd.Series,
+                   X_test: pd.DataFrame,
+                   y_test: pd.Series,
+                   scorer,
+                   randomized: bool = False) -> BaseSearchCV:
+    """Optimize the model using GridSearchCV or RandomizedSearchCV
 
     Args:
         model (sklearn.base.BaseEstimator): model to optimize
@@ -154,14 +155,6 @@ def optimize_model(model: BaseEstimator, parameters, X_train: pd.DataFrame, y_tr
     Returns:
         GridSearchCV: Grid search object with all scores, parameters, and best parameters and best estimator
     """
-
-    from sklearn.metrics import accuracy_score, fbeta_score
-
-    # TODO: Import 'GridSearchCV', 'make_scorer', and any other necessary libraries
-    from sklearn.metrics import make_scorer
-
-    # TODO: Make an fbeta_score scoring object using make_scorer()
-    scorer = make_scorer(fbeta_score, beta=_g_beta)
 
     # TODO: Perform grid search on the classifier using 'scorer' as the scoring method using GridSearchCV()
     if randomized:
