@@ -338,7 +338,7 @@ def plot_correlation_matrix(df: pd.DataFrame,
                             title: str = 'Correlation Matrix',
                             cmap: str = 'Blues',
                             figsize: tuple = (12, 8),
-                            threshold: float = 0.9) -> pd.DataFrame:
+                            threshold: float = 0.9):
     # Check for correlations between numeric features. Rule, if two features that are highly correlated one should be dropped
     # Restart kernel to see changes
 
@@ -352,5 +352,3 @@ def plot_correlation_matrix(df: pd.DataFrame,
     sns.heatmap(corr_matrix_filtered, cmap=cmap, annot=True, fmt=".2f")
     plt.title(title)
     plt.show()
-
-    return corr_matrix
