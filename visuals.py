@@ -74,12 +74,11 @@ def evaluate(results, accuracy, f1):
             for i in np.arange(3):
 
                 # Creative plot code
-                ax[j//3, j % 3].bar(i+k*bar_width, results[learner]
-                                    [i][metric], width=bar_width, color=colors[k])
-                ax[j//3, j % 3].set_xticks([0.45, 1.45, 2.45])
-                ax[j//3, j % 3].set_xticklabels(["1%", "10%", "100%"])
-                ax[j//3, j % 3].set_xlabel("Training Set Size")
-                ax[j//3, j % 3].set_xlim((-0.1, 3.0))
+                ax[j // 3, j % 3].bar(i + k * bar_width, results[learner][i][metric], width=bar_width, color=colors[k])
+                ax[j // 3, j % 3].set_xticks([0.45, 1.45, 2.45])
+                ax[j // 3, j % 3].set_xticklabels(["1%", "10%", "100%"])
+                ax[j // 3, j % 3].set_xlabel("Training Set Size")
+                ax[j // 3, j % 3].set_xlim((-0.1, 3.0))
 
     # Add unique y-labels
     ax[0, 0].set_ylabel("Time (in seconds)")
@@ -98,14 +97,10 @@ def evaluate(results, accuracy, f1):
     ax[1, 2].set_title("F-score on Testing Set")
 
     # Add horizontal lines for naive predictors
-    ax[0, 1].axhline(y=accuracy, xmin=-0.1, xmax=3.0,
-                     linewidth=1, color='k', linestyle='dashed')
-    ax[1, 1].axhline(y=accuracy, xmin=-0.1, xmax=3.0,
-                     linewidth=1, color='k', linestyle='dashed')
-    ax[0, 2].axhline(y=f1, xmin=-0.1, xmax=3.0, linewidth=1,
-                     color='k', linestyle='dashed')
-    ax[1, 2].axhline(y=f1, xmin=-0.1, xmax=3.0, linewidth=1,
-                     color='k', linestyle='dashed')
+    ax[0, 1].axhline(y=accuracy, xmin=-0.1, xmax=3.0, linewidth=1, color='k', linestyle='dashed')
+    ax[1, 1].axhline(y=accuracy, xmin=-0.1, xmax=3.0, linewidth=1, color='k', linestyle='dashed')
+    ax[0, 2].axhline(y=f1, xmin=-0.1, xmax=3.0, linewidth=1, color='k', linestyle='dashed')
+    ax[1, 2].axhline(y=f1, xmin=-0.1, xmax=3.0, linewidth=1, color='k', linestyle='dashed')
 
     # Set y-limits for score panels
     ax[0, 1].set_ylim((0, 1))
@@ -117,16 +112,19 @@ def evaluate(results, accuracy, f1):
     patches = []
     for i, learner in enumerate(results.keys()):
         patches.append(mpatches.Patch(color=colors[i], label=learner))
-    plt.legend(handles=patches, bbox_to_anchor=(-.80, 2.53),
-               loc='upper center', borderaxespad=0., ncol=3, fontsize='x-large')
+
+    plt.legend(handles=patches,
+               bbox_to_anchor=(-.80, 2.53),
+               loc='upper center',
+               borderaxespad=0.,
+               ncol=3,
+               fontsize='x-large')
 
     # Aesthetics
-    plt.suptitle("Performance Metrics for Three Supervised Learning Models",
-                 fontsize=16, x=0.63, y=1.05)
+    plt.suptitle("Performance Metrics for Three Supervised Learning Models", fontsize=16, x=0.63, y=1.05)
     # Tune the subplot layout
     # Refer - https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.subplots_adjust.html for more details on the arguments
-    plt.subplots_adjust(left=0.125, right=1.2, bottom=0.1,
-                        top=0.9, wspace=0.2, hspace=0.3)
+    plt.subplots_adjust(left=0.125, right=1.2, bottom=0.1, top=0.9, wspace=0.2, hspace=0.3)
     plt.tight_layout()
     plt.show()
 
@@ -140,11 +138,13 @@ def feature_plot(importances, X_train, y_train):
 
     # Create the plot
     fig = plt.figure(figsize=(18, 5))
-    plt.title(
-        "Normalized Weights for First Five Most Predictive Features", fontsize=16)
-    plt.bar(np.arange(5), values, width=0.2, align="center", color='#00A000',
-            label="Feature Weight")
-    plt.bar(np.arange(5) - 0.3, np.cumsum(values), width=0.2, align="center", color='#00A0A0',
+    plt.title("Normalized Weights for First Five Most Predictive Features", fontsize=16)
+    plt.bar(np.arange(5), values, width=0.2, align="center", color='#00A000', label="Feature Weight")
+    plt.bar(np.arange(5) - 0.3,
+            np.cumsum(values),
+            width=0.2,
+            align="center",
+            color='#00A0A0',
             label="Cumulative Feature Weight")
     plt.xticks(np.arange(5), columns)
     plt.xlim((-0.5, 4.5))
@@ -171,16 +171,12 @@ def visualize_crosstabs(df: pd.DataFrame, categorical_features: list, target: st
     columns_per_row = 3
     plot_rows = math.ceil(len(categorical_features) / columns_per_row)
 
-    fig, axes = plt.subplots(plot_rows,
-                             columns_per_row,
-                             figsize=(15, plot_rows * 4),
-                             constrained_layout=True)
+    fig, axes = plt.subplots(plot_rows, columns_per_row, figsize=(15, plot_rows * 4), constrained_layout=True)
     # Create crosstabs to show distribution the values of each categorical against income
     i = j = 0
     for feat in categorical_features:
         table = pd.crosstab(df[feat], df[target])
-        table.div(table.sum(1).astype(float), axis=0).plot(
-            kind='bar', ax=axes[i, j], stacked=True)
+        table.div(table.sum(1).astype(float), axis=0).plot(kind='bar', ax=axes[i, j], stacked=True)
         j += 1
         if j == columns_per_row:
             j = 0
@@ -232,10 +228,8 @@ def visualize_numerical_features(df: pd.DataFrame, numerical_features: list, tar
                 if kind == 'hist':
                     query_df[feat].plot(kind=kind, ax=axes[row, col])
                 elif kind:
-                    query_df[feat].plot(
-                        kind=kind, ax=axes[row, col], vert=False)
-                plt.setp(axes[row, col],
-                         xlabel=f"{feat} for {target} == {target_val}")
+                    query_df[feat].plot(kind=kind, ax=axes[row, col], vert=False)
+                plt.setp(axes[row, col], xlabel=f"{feat} for {target} == {target_val}")
                 row += 1
 
             col += 1
@@ -276,7 +270,9 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     fmt = '.2f' if normalize else 'd'
     thresh = cm.max() / 2.
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
-        plt.text(j, i, format(cm[i, j], fmt),
+        plt.text(j,
+                 i,
+                 format(cm[i, j], fmt),
                  horizontalalignment="center",
                  color="white" if cm[i, j] > thresh else "black")
 
@@ -285,8 +281,14 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
     plt.xlabel('Predicted label')
 
 
-def plot_evaluation_metrics_columns(df: pd.DataFrame, title: str = 'Evaluation Metrics', y_label: str = 'Score', x_label: str = 'Number of Features',):
-    """Plot the classification metrics given in dataframe as columns. Assumes columns are accuracy, precision, recall, f1.\n
+def plot_evaluation_metrics_columns(
+    df: pd.DataFrame,
+    title: str = 'Evaluation Metrics',
+    y_label: str = 'Score',
+    x_label: str = 'Number of Features',
+):
+    """Plot the classification metrics given in dataframe as columns. 
+    Assumes columns are accuracy, precision, recall, f1.\n
     Also, assumes each row contains the scores of the metrics for the number of features used in modeling.\n
     i.e. row 0 is 1 feature, row 1 is 2 features, etc.
 
@@ -299,8 +301,7 @@ def plot_evaluation_metrics_columns(df: pd.DataFrame, title: str = 'Evaluation M
     plt.figure(figsize=(10, 5))
     for column in df.columns:
         plt.plot(df[column])
-        plt.xticks(np.arange(len(df[column])),
-                   [i+1 for i in range(df.shape[0])])
+        plt.xticks(np.arange(len(df[column])), [i + 1 for i in range(df.shape[0])])
     plt.title(title)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
@@ -318,17 +319,14 @@ def plot_feature_importance(features: list, importances: list, figsize: tuple = 
 
     import pandas as pd
     # Extract the feature importances into a dataframe
-    feature_results = pd.DataFrame({'feature': features,
-                                    'importance': importances})
+    feature_results = pd.DataFrame({'feature': features, 'importance': importances})
 
     # Show the top 10 most important
-    feature_results = feature_results.sort_values(
-        'importance',).reset_index(drop=True)
+    feature_results = feature_results.sort_values('importance',).reset_index(drop=True)
 
     # Plot
     # Plot the most important features in a horizontal bar chart
-    feature_results.plot(x='feature', y='importance', edgecolor='k',
-                         kind='barh', color='blue', figsize=figsize)
+    feature_results.plot(x='feature', y='importance', edgecolor='k', kind='barh', color='blue', figsize=figsize)
     plt.xlabel('Relative Importance', size=12)
     plt.ylabel('')
     plt.title('Feature Importances', size=12)
@@ -336,9 +334,11 @@ def plot_feature_importance(features: list, importances: list, figsize: tuple = 
     plt.show()
 
 
-def plot_correlation_matrix(df: pd.DataFrame, title: str = 'Correlation Matrix',
-                            cmap: str = 'Blues', figsize: tuple = (12, 8),
-                            threshold: float = 0.9) -> None:
+def plot_correlation_matrix(df: pd.DataFrame,
+                            title: str = 'Correlation Matrix',
+                            cmap: str = 'Blues',
+                            figsize: tuple = (12, 8),
+                            threshold: float = 0.9) -> pd.DataFrame:
     # Check for correlations between numeric features. Rule, if two features that are highly correlated one should be dropped
     # Restart kernel to see changes
 
@@ -349,6 +349,8 @@ def plot_correlation_matrix(df: pd.DataFrame, title: str = 'Correlation Matrix',
     corr_matrix = df[numeric_features_list].corr()
     corr_matrix_filtered = corr_matrix[corr_matrix >= threshold]
 
-    sns.heatmap(corr_matrix_filtered,  cmap=cmap, annot=True, fmt=".2f")
+    sns.heatmap(corr_matrix_filtered, cmap=cmap, annot=True, fmt=".2f")
     plt.title(title)
     plt.show()
+
+    return corr_matrix
