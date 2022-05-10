@@ -33,3 +33,36 @@ def get_binary_features(df: pd.DataFrame) -> list:
             bool_list.append(column)
 
     return bool_list
+
+
+def remove_highly_correlated_features(features_df: pd.DataFrame, threshold: float) -> pd.DataFrame:
+    """Remove features with a correlation greater than the threshold with other feature
+
+    Args:
+        features_df (pd.DataFrame): dataframe of numeric (float) features
+        threshold (float): correlation threshold
+    Returns:
+        pd.DataFrame: dataframe with highly correlated features removed
+    """
+
+    corr_matrix = features_df.corr()
+
+    size = len(corr_matrix)
+
+    for i in range(size):
+        if i == size:
+            break
+        name = corr_matrix.columns[i]
+        for j in range(i + 1, size):
+            if j == size:
+                break
+            corr = abs(corr_matrix.iloc[i, j])
+            if corr > threshold:
+                # remove the column j and row j
+                corr_matrix.drop(corr_matrix.columns[j], axis=1, inplace=True)
+                corr_matrix.drop(corr_matrix.index[j], axis=0, inplace=True)
+                size -= 1
+
+    features_pure_df = features_df[corr_matrix.columns]
+
+    return features_pure_df
