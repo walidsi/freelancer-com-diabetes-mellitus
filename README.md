@@ -36,13 +36,6 @@ This will open the iPython Notebook software and project file in your browser.
 The dataset consists of approximately XXX data points, with each datapoint having YY features. 
 
 **Features**
-- `age`: Age
-- `sex`: Sex (Female, Male)
-- `capital-gain`: Monetary Capital Gains
-- `capital-loss`: Monetary Capital Losses
-- `hours-per-week`: Average Hours Per Week Worked
-- `native-country`: Native Country (United-States, Cambodia, England, Puerto-Rico, Canada, Germany, Outlying-US(Guam-USVI-etc), India, Japan, Greece, South, China, Cuba, Iran, Honduras, Philippines, Italy, Poland, Jamaica, Vietnam, Mexico, Portugal, Ireland, France, Dominican-Republic, Laos, Ecuador, Taiwan, Haiti, Columbia, Hungary, Guatemala, Nicaragua, Scotland, Thailand, Yugoslavia, El-Salvador, Trinadad&Tobago, Peru, Hong, Holand-Netherlands)
-
 - `encounter_id`: 	Unique identifier associated with a patient unit stay
 - `hospital_id`: 	Unique identifier associated with a hospital
 - `age`: 	The age of the patient on unit admission
@@ -130,9 +123,7 @@ The dataset consists of approximately XXX data points, with each datapoint havin
 - `leukemia`: 	Whether the patient has been diagnosed with acute or chronic myelogenous leukemia, acute or chronic lymphocytic leukemia, or multiple myeloma.
 - `lymphoma`: 	Whether the patient has been diagnosed with non-Hodgkin lymphoma.
 - `solid_tumor_with_metastasis`: 	Whether the patient has been diagnosed with any solid tumor carcinoma (including malignant melanoma) which has evidence of metastasis.
-- `diabetes_mellitus`: 	Whether the patient has been diagnosed with diabetes mellitus, a chronic disease.
-![image](https://user-images.githubusercontent.com/42148514/168102794-bf249d35-c4fb-4e7f-b3b4-002d9393569a.png)
 
 
 **Target Variable**
-- `diabetes-mellitus`: (1, 0)
+- `diabetes-mellitus`: 	Whether the patient has been diagnosed with diabetes mellitus, a chronic disease (1, 0)
