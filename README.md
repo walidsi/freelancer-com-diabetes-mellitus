@@ -1,7 +1,6 @@
-# freelancer-com-diabetes-mellitus
-
 # Supervised Learning
-## Predicting diabetes
+## Predicting diabetes-mellitus
+
 
 ### Install
 
@@ -33,7 +32,7 @@ This will open the iPython Notebook software and project file in your browser.
 
 ### Data
 
-The dataset consists of approximately XXX data points, with each datapoint having YY features. 
+The dataset consists of approximately 79000 data points, with each datapoint having 87 features. 
 
 **Features**
 - `encounter_id`: 	Unique identifier associated with a patient unit stay
