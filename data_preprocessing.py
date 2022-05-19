@@ -134,3 +134,28 @@ def fill_empty_with_average(df: pd.DataFrame, column: str, criteria_column: str)
         df.loc[mask & (df[column].isnull()), column] = mean
 
     return df
+
+
+def remove_outliers(df: pd.DataFrame, columns: list, clip: bool = False) -> pd.DataFrame:
+    """Removes rows with outliers from numeric floating point columns
+
+    Args:
+        df (pd.DataFrame): input dataframe
+        columns (list): numeric (float) columns
+        clip (bool): clip values to min/max if True
+
+    Returns:
+        pd.DataFrame: updated dataframe
+    """
+    for column in columns:
+        q1 = df[column].quantile(0.25)
+        q3 = df[column].quantile(0.75)
+        maximum = (q3 - q1) * 1.5 + q3
+        minimum = (q3 - q1) * -1.5 + q1
+
+        if clip:
+            df[column] = df[column].clip(minimum, maximum)
+        else:
+            df = df[(df[column] <= maximum) & (df[column] >= minimum)]
+
+    return df
