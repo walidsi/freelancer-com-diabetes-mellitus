@@ -291,10 +291,11 @@ def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix'
 
 
 def plot_evaluation_metrics_columns(
-    df: pd.DataFrame,
-    title: str = 'Evaluation Metrics',
-    y_label: str = 'Score',
-    x_label: str = 'Number of Features',
+        df: pd.DataFrame,
+        title: str = 'Evaluation Metrics',
+        y_label: str = 'Score',
+        x_label: str = 'Number of Features',
+        figsize: tuple = (10, 5),
 ):
     """Plot the classification metrics given in dataframe as columns. 
     Assumes columns are accuracy, precision, recall, f1.\n
@@ -307,7 +308,7 @@ def plot_evaluation_metrics_columns(
         y_label (str, optional): y-axis label. Defaults to 'Number of Features'.
         x_label (str, optional): x-axis label. Defaults to 'Score'.
     """
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=figsize)
     for column in df.columns:
         plt.plot(df[column])
         plt.xticks(np.arange(len(df[column])), [i + 1 for i in range(df.shape[0])])
