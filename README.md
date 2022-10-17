@@ -1,6 +1,14 @@
-# Supervised Learning
-## Predicting diabetes-mellitus
+# freelancer-com-diabetes-mellitus
 
+![Contributors](https://img.shields.io/github/contributors/walidsi/freelancer-com-diabetes-mellitus?style=plastic)
+![Forks](https://img.shields.io/github/forks/walidsi/freelancer-com-diabetes-mellitus)
+![Downloads](https://img.shields.io/github/downloads/walidsi/freelancer-com-diabetes-mellitus/total)
+![Stars](https://img.shields.io/github/stars/walidsi/freelancer-com-diabetes-mellitus)
+![Licence](https://img.shields.io/github/license/walidsi/freelancer-com-diabetes-mellitus)
+![Issues](https://img.shields.io/github/issues/walidsi/freelancer-com-diabetes-mellitus)
+
+## Goal
+The goal of this project is to predict whether a patient has diabetes mellitus or not. The project is a supervised learning project.
 
 ### Install
 
